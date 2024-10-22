@@ -1,0 +1,21 @@
+<odoo>
+    <template id="custom_knowledge_article_view_frontend" name="Website Knowledge Layout"
+              inherit_id="knowledge.knowledge_article_view_frontend">
+        <xpath expr="//div[hasclass('o_knowledge_form_view')]" position="attributes">
+            <attribute name="t-att-data-art-token">art_token if art_token else False</attribute>
+            <attribute name="t-att-data-parent-id">parent_art_id if parent_art_id else False</attribute>
+        </xpath>
+    </template>
+    <template id="articles_template_inherit" inherit_id="knowledge.articles_template">
+        <xpath expr="//li" position="attributes">
+            <attribute name="t-att-data-art-token">art_token</attribute>
+            <attribute name="t-att-data-parent-id">parent_id if parent_id else False</attribute>
+        </xpath>
+    </template>
+    <template id="articles_template_name_ext" inherit_id="knowledge.articles_template_name">
+        <xpath expr="//div[hasclass('o_article_name')]//a" position="replace">
+            <a t-if="parent_verified" t-out="article.display_name" t-attf-href="/knowledge/article/{{article.id}}/{{article.access_token}}/{{parent_id}}/{{art_token}}" class="text-decoration-none"/>
+            <a t-else="" t-out="article.display_name" t-attf-href="/knowledge/article/{{article.id}}" class="text-decoration-none"/>
+        </xpath>
+    </template>
+</odoo>
